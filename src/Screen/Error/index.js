@@ -21,7 +21,7 @@ import {
 } from '../../Assets';
 
 const {height} = Dimensions.get('window');
-const Error = () => {
+const Error = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -58,11 +58,13 @@ const Error = () => {
             source={tablet}
             resizeMode="center"
           />
+          <TouchableOpacity onPress={() => navigation.navigate('Done')}>
           <Image
             style={styles.iconNext}
             source={iconNext}
             resizeMode="center"
           />
+          </TouchableOpacity>        
         </View>
       </ImageBackground>
     </SafeAreaView>

@@ -15,6 +15,7 @@ export const imageError = require('./imageError.png')
 export const Avatar = require('./Avatar.png')
 export const Vector = require('./Vector.png')
 export const iconLyDark = require('./iconLyDark.png')
+export const iconVienLy = require('./iconVienLy.png')
 
 
 

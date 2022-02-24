@@ -15,7 +15,7 @@ import {background, logo, video, scan, tablet, iconNext} from '../../Assets';
 
 
 const {height} = Dimensions.get('window');
-const Login = () => {
+const Welcome = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -34,20 +34,25 @@ const Login = () => {
         </View>
         <View style = {styles.Scan}>
           <Image style={styles.iconScan} source={scan} resizeMode="center" />
-          <TouchableOpacity style = {styles.action}>
+          <TouchableOpacity  style = {styles.action}>
             <Text style={styles.scanText}>Follow the around to scan card</Text>
           </TouchableOpacity>
         </View>
         <View style = {styles.tablet}>
-          <Image style={styles.iconTablet} source={tablet} resizeMode="center" />
-          <Image style={styles.iconNext} source={iconNext} resizeMode="center" />
+          <TouchableOpacity onPress={() => navigation.navigate('Error')}>
+            <Image style={styles.iconTablet} source={tablet} resizeMode="center" />
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={() => navigation.navigate('Done')}>
+            <Image  style={styles.iconNext} source={iconNext} resizeMode="center" />
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </SafeAreaView>
   );
 };
 
-export default Login;
+export default Welcome;
 
 const styles = StyleSheet.create({
   container: {

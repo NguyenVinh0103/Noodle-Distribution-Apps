@@ -8,13 +8,20 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
-import {background, logo, imageDone, iconTim, iconBackToHome, iconNextDone} from '../../Assets';
-
+import {
+  background,
+  logo,
+  imageDone,
+  iconTim,
+  iconBackToHome,
+  iconNextDone,
+} from '../../Assets';
 
 const {height} = Dimensions.get('window');
-const Done = () => {
+const Done = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -29,16 +36,33 @@ const Done = () => {
         <View style={styles.contain}>
           <Image style={styles.icon} source={logo} resizeMode="center" />
           <Text style={styles.content}>Welcome</Text>
-          <Image style={styles.imageDone} source={imageDone} resizeMode="stretch" />
+          <Image
+            style={styles.imageDone}
+            source={imageDone}
+            resizeMode="stretch"
+          />
         </View>
-        <View style = {styles.txtNight}>
+        <View style={styles.txtNight}>
           <Text style={styles.txtNightText}>Enjoy Your Noodle</Text>
           <Image style={styles.iconTim} source={iconTim} resizeMode="center" />
         </View>
-        <View style= {styles.btn}>
-            <Image style={styles.btnBackToHome} source={iconBackToHome} resizeMode="center" />
+        <View style={styles.btn}>
+          <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
+            <Image
+              style={styles.btnBackToHome}
+              source={iconBackToHome}
+              resizeMode="center"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('InformationLight')}>
             <Text style={styles.txt}>Get them Below</Text>
-            <Image style={styles.iconNextDone} source={iconNextDone} resizeMode="center" />
+          </TouchableOpacity>
+
+          <Image
+            style={styles.iconNextDone}
+            source={iconNextDone}
+            resizeMode="center"
+          />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -76,40 +100,40 @@ const styles = StyleSheet.create({
   imageDone: {
     width: 250,
     height: 250,
-    marginTop: 10
+    marginTop: 10,
   },
   txtNightText: {
     color: '#AE0808',
     fontSize: 25,
-    fontFamily:'Paytone One',
+    fontFamily: 'Paytone One',
     fontWeight: 'bold',
     marginTop: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
-  txtNight:{
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems: 'center'
+  txtNight: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  iconTim:{
+  iconTim: {
     width: 50,
-    marginTop: 10
+    marginTop: 10,
   },
-  btn:{
-    alignItems:'center'
+  btn: {
+    alignItems: 'center',
   },
-  btnBackToHome:{
+  btnBackToHome: {
     width: 260,
     height: 100,
-    marginTop: 8
+    marginTop: 8,
   },
-  txt:{
-    color:'#F8C135',
-    fontWeight:'800',
-    fontStyle:'normal',
-    fontSize: 20
+  txt: {
+    color: '#F8C135',
+    fontWeight: '800',
+    fontStyle: 'normal',
+    fontSize: 20,
   },
-  iconNextDone:{
+  iconNextDone: {
     width: 90,
-  }
+  },
 });

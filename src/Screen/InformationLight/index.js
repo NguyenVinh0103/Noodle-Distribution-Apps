@@ -22,7 +22,7 @@ import {
 } from '../../Assets';
 
 const {height} = Dimensions.get('window');
-const InformationLight = () => {
+const InformationLight = ({navigation}) => {
   const arr = [
     {
       id: 1,
@@ -111,11 +111,14 @@ const InformationLight = () => {
         </View>
 
         <View style={styles.btn}>
-          <Image
-            style={styles.btnInformation}
-            source={btnInformation}
-            resizeMode="center"
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('InformationDarkDefaul')}>
+            <Image
+              style={styles.btnInformation}
+              source={btnInformation}
+              resizeMode="center"
+            />
+          </TouchableOpacity>
+          
         </View>
       </ImageBackground>
     </SafeAreaView>

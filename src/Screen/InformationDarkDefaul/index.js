@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -20,7 +21,7 @@ import {
 } from '../../Assets';
 
 const {height} = Dimensions.get('window');
-const InformationDarkDefaul = () => {
+const InformationDarkDefaul = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -87,11 +88,13 @@ const InformationDarkDefaul = () => {
         </View>
 
         <View style={styles.btn}>
-          <Image
-            style={styles.btnInformation}
-            source={btnInformation}
-            resizeMode="center"
-          />
+          <TouchableOpacity onPress = {() => navigation.navigate('InformationDark')}>
+            <Image
+              style={styles.btnInformation}
+              source={btnInformation}
+              resizeMode="center"
+            />
+          </TouchableOpacity>   
         </View>
       </ImageBackground>
     </SafeAreaView>
