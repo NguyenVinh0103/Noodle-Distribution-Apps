@@ -5,7 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Welcome from './src/Screen/Welcome/index.js';
-import Login from './src/Screen/Login/index.js';
+import SignIn from './src/Screen/SignIn/index.js';
+import Register from './src/Screen/Register/index.js';
 import Done from './src/Screen/Done/index.js';
 import Information1 from './src/Screen/Information1/index.js';
 import Information2 from './src/Screen/Information2/index.js';
@@ -25,7 +26,8 @@ const App = () => {
 
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login}  options={{ headerShown: false  }}/>
+        <Stack.Screen name="Register" component={Register}  options={{ headerShown: false  }}/>
+        <Stack.Screen name="SignIn" component={SignIn}  options={{ headerShown: false  }}/>
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false  }}/>
         <Stack.Screen name="Done" component={Done}  options={{ headerShown: false  }}/>
         <Stack.Screen name="Information1" component={Information1} options={{ headerShown: false  }} />

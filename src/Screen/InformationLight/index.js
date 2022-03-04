@@ -111,7 +111,7 @@ const InformationLight = ({navigation}) => {
         </View>
 
         <View style={styles.btn}>
-          <TouchableOpacity onPress={() => navigation.navigate('InformationDarkDefaul')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Done')}>
             <Image
               style={styles.btnInformation}
               source={btnInformation}

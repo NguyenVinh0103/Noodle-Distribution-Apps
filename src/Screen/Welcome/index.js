@@ -39,11 +39,11 @@ const Welcome = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style = {styles.tablet}>
-          <TouchableOpacity onPress={() => navigation.navigate('Error')}>
+          <TouchableOpacity onPress={() => navigation.navigate('InformationLight')}>
             <Image style={styles.iconTablet} source={tablet} resizeMode="center" />
           </TouchableOpacity>
           
-          <TouchableOpacity onPress={() => navigation.navigate('Done')}>
+          <TouchableOpacity>
             <Image  style={styles.iconNext} source={iconNext} resizeMode="center" />
           </TouchableOpacity>
         </View>
