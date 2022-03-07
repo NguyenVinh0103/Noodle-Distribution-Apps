@@ -15,7 +15,6 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import auth from '@react-native-firebase/auth';
 
-
 import {background, facebook, youtube, instagram} from '../../Assets';
 
 const {height} = Dimensions.get('window');
@@ -25,27 +24,30 @@ const Register = ({navigation}) => {
 
   const RegisterAccount = () => {
     console.log(email);
-    auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      Alert.alert(
-        "Alert Title",
-        "My Alert Msg",
-        [
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        Alert.alert('Alert !!!', 'Register Success', [
           {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
           },
-          { text: "OK", onPress: () => navigation.navigate('SignIn') }
-        ]
-      );
-    })
-    .catch((error) => {
-      Alert.alert(
-        "Alert Title",
-        "Register Fail",
-      );
-    });
+          {text: 'OK', onPress: () => navigation.navigate('SignIn')},
+        ]);
+        setEmail('');
+        setPassword('');
+      })
+      .catch(error => {
+        Alert.alert('Alert !!!', 'Sign In Fail', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('Sign In Fail')},
+        ]);
+      });
   };
 
   return (
@@ -86,11 +88,11 @@ const Register = ({navigation}) => {
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}></Text>
-              <TouchableOpacity onPress={RegisterAccount}>
-                <View style={styles.buttonSignIn}>
-                  <Text style={styles.buttonLoginText}>Register</Text>
-                </View>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={RegisterAccount}>
+              <View style={styles.buttonSignIn}>
+                <Text style={styles.buttonLoginText}>Register</Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.contain}>

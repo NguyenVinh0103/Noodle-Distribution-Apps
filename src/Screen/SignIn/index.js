@@ -10,12 +10,45 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import auth from '@react-native-firebase/auth';
 
 import {background, facebook, youtube, instagram} from '../../Assets';
+
 const {height} = Dimensions.get('window');
 const SignIn = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const SignInAccount = () => {
+    console.log(email);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        Alert.alert('Alert !!!', 'Sign In Success', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => navigation.navigate('InformationLight')},
+        ]);
+        setEmail('');
+        setPassword('');
+      })
+      .catch(error => {
+        Alert.alert('Alert !!!', 'Sign In Fail', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('Sign In Fail')},
+        ]);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -37,19 +70,24 @@ const SignIn = ({navigation}) => {
               style={styles.input}
               placeholder="@gmail.com......"
               placeholderTextColor="#fff"
+              onChangeText={value => setEmail(value)}
+              value={email}
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}></Text>
 
             <TextInput
               style={styles.input}
-              placeholder="************"
+              placeholder="**********"
               placeholderTextColor="#fff"
+              securityTextEntry={true}
+              onChangeText={value => setPassword(value)}
+              value={password}
+              keyboardType="numeric"
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}></Text>
-
-            <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
+            <TouchableOpacity onPress={SignInAccount}>
               <View style={styles.buttonSignIn}>
                 <Text style={styles.buttonLoginText}>Sign In</Text>
               </View>
@@ -83,8 +121,10 @@ const SignIn = ({navigation}) => {
               <Text style={styles.actionLoginText}>Forget Password</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.actionLogin}>
-              <Text style={styles.actionLoginText}>Create Password</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Register')}
+              style={styles.actionLogin}>
+              <Text style={styles.actionLoginText}>Register Account</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
