@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081710729850",
+    "project_id": "nodle-app",
+    "storage_bucket": "nodle-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081710729850:android:5d38ae73421a524e10f9c3",
+        "android_client_info": {
+          "package_name": "com.noodle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081710729850-u5f52pu31at37g18mjnvl863j8ph043g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ3893DsL7tfVVj_jSs1PZwYGxKjsigYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081710729850-u5f52pu31at37g18mjnvl863j8ph043g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,12 +10,44 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import auth from '@react-native-firebase/auth';
+
 
 import {background, facebook, youtube, instagram} from '../../Assets';
+
 const {height} = Dimensions.get('window');
 const Register = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const RegisterAccount = () => {
+    console.log(email);
+    auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      Alert.alert(
+        "Alert Title",
+        "My Alert Msg",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => navigation.navigate('SignIn') }
+        ]
+      );
+    })
+    .catch((error) => {
+      Alert.alert(
+        "Alert Title",
+        "Register Fail",
+      );
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -37,23 +69,28 @@ const Register = ({navigation}) => {
               style={styles.input}
               placeholder="@gmail.com......"
               placeholderTextColor="#fff"
+              onChangeText={value => setEmail(value)}
+              value={email}
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}></Text>
 
             <TextInput
               style={styles.input}
-              placeholder="************"
+              placeholder="**********"
               placeholderTextColor="#fff"
+              securityTextEntry={true}
+              onChangeText={value => setPassword(value)}
+              value={password}
+              keyboardType="numeric"
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}></Text>
-
-            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-              <View style={styles.buttonSignIn}>
-                <Text style={styles.buttonLoginText}>Register</Text>
-              </View>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={RegisterAccount}>
+                <View style={styles.buttonSignIn}>
+                  <Text style={styles.buttonLoginText}>Register</Text>
+                </View>
+              </TouchableOpacity>
           </View>
 
           <View style={styles.contain}>
