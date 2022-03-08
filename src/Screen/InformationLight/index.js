@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -8,8 +8,12 @@ import {
   StatusBar,
   ImageBackground,
   Dimensions,
-  Image
+  Image,
 } from 'react-native';
+
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import auth from '@react-native-firebase/auth';
 
 import {
   background,
@@ -17,7 +21,7 @@ import {
   information,
   iconLy,
   btnInformation,
-  Avatar,
+  image,
   Vector,
 } from '../../Assets';
 
@@ -38,19 +42,47 @@ const InformationLight = ({navigation}) => {
     },
   ];
   const [data, setData] = useState(arr);
-  const onPressItem = (id) => {
-
+  const onPressItem = id => {
     const dataTemp = [...data]; /// tạo ra 1 mảng mới giống hệt mảng cũ;
 
     ///vi tri cua mang la index, data/dataTemp la mang
     const index = dataTemp.findIndex(item => item.id == id);
     /// lay phan tu cua mang mang[vi_tri_cua_mang];
-    console.log(data[index], index)
-    if(index > -1) {
+    console.log(data[index], index);
+    if (index > -1) {
       dataTemp[index].isChecked = !dataTemp[index].isChecked;
       setData(dataTemp);
     }
-  }
+  };
+  const [fullname, setFullname] = useState('');
+  const [birthday, setBirthDay] = useState('');
+  const [gender, setGender] = useState('');
+  const [apartment, setApartment] = useState('');
+  const [image, setImage] = useState('');
+
+  useEffect(() => {
+    firestore()
+      .collection('NoodleDistributionApps')
+      .doc(auth().currentUser.email)
+      .get()
+      .then(data => {
+        const user = data._data;
+        setFullname(user.fullname);
+        setBirthDay(user.birthday);
+        setGender(user.gender);
+        setApartment(user.apartment);
+
+        storage()
+          .ref(user.image)
+          .getDownloadURL()
+          .then(url => setImage(url))
+          .catch(e => console.log(e));
+      });
+      console.log(auth().currentuser);
+
+    // Stop listening for updates when no longer required
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -72,7 +104,7 @@ const InformationLight = ({navigation}) => {
             source={information}
             resizeMode="stretch"
           />
-          <Image style={styles.Avatar} source={Avatar} resizeMode="stretch" />
+          <Image style={styles.Avatar} source={{uri : image}} resizeMode="stretch" />
           <View style={styles.form}>
             <View style={styles.formText}>
               <Text style={styles.txt}>Full name: </Text>
@@ -81,28 +113,36 @@ const InformationLight = ({navigation}) => {
               <Text style={styles.txt}>Department: </Text>
             </View>
             <View style={styles.formTextView}>
-              <Text style={styles.txtView}>Alice Mie</Text>
-              <Text style={styles.txtView}>12/10/1999</Text>
-              <Text style={styles.txtView}>Female</Text>
-              <Text style={styles.txtView}>Design</Text>
+              <Text style={styles.txtView}>{fullname}</Text>
+              <Text style={styles.txtView}>{birthday}</Text>
+              <Text style={styles.txtView}>{gender}</Text>
+              <Text style={styles.txtView}>{apartment}</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.imagesLy}>
           {data.map(item => {
-            return(
-              <TouchableOpacity onPress={() => onPressItem(item?.id)} style={styles.backgroundVector}>
-              {item?.isChecked && <Image
-                style={styles.backgroundVectorLy}
-                source={Vector}
-                resizeMode="stretch"
-              />}
-              {/* Toan tu 2 ngoi. => dieu kien dung -> show ngoi thu 2 */}
-            
-              <Image style={styles.iconLy} source={iconLy} resizeMode="stretch" />
-            </TouchableOpacity>
-            )
+            return (
+              <TouchableOpacity
+                onPress={() => onPressItem(item?.id)}
+                style={styles.backgroundVector}>
+                {item?.isChecked && (
+                  <Image
+                    style={styles.backgroundVectorLy}
+                    source={Vector}
+                    resizeMode="stretch"
+                  />
+                )}
+                {/* Toan tu 2 ngoi. => dieu kien dung -> show ngoi thu 2 */}
+
+                <Image
+                  style={styles.iconLy}
+                  source={iconLy}
+                  resizeMode="stretch"
+                />
+              </TouchableOpacity>
+            );
           })}
         </View>
         <View style={styles.TextForm}>
@@ -118,7 +158,6 @@ const InformationLight = ({navigation}) => {
               resizeMode="center"
             />
           </TouchableOpacity>
-          
         </View>
       </ImageBackground>
     </SafeAreaView>
