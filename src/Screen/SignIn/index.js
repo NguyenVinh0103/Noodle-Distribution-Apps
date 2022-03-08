@@ -36,6 +36,8 @@ const SignIn = ({navigation}) => {
           },
           {text: 'OK', onPress: () => navigation.navigate('InformationLight')},
         ]);
+        setEmail('');
+        setPassword('');
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -45,20 +47,20 @@ const SignIn = ({navigation}) => {
         if (error.code === 'auth/invalid-email') {
           setErrorPassword('please input password again');
         }
+        setEmail('');
+        setPassword('');
     
         console.error(error);
       });
       console.log(email);
-      setEmail('');
-      setPassword('');
-
   };
 
   useEffect(() => {
     if (auth().currentUser) {
-      navigation.navigate('InformationLight');
+      navigation.navigate('SignIn');
     }
   }, []);
+  console.log(auth().currentUser)
 
   return (
     <SafeAreaView style={styles.container}>

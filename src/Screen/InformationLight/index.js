@@ -21,7 +21,7 @@ import {
   information,
   iconLy,
   btnInformation,
-  image,
+  avatar,
   Vector,
 } from '../../Assets';
 
@@ -58,28 +58,28 @@ const InformationLight = ({navigation}) => {
   const [birthday, setBirthDay] = useState('');
   const [gender, setGender] = useState('');
   const [apartment, setApartment] = useState('');
-  const [image, setImage] = useState('');
+  const [avatar, setAvatar] = useState('https://static.topcv.vn/avatars/QRVnjwk0LezxZEWkQwTs_61e023815645f_cvtpl.jpg?1646718915');
 
   useEffect(() => {
     firestore()
-      .collection('NoodleDistributionApps')
+      .collection('User')
       .doc(auth().currentUser.email)
       .get()
       .then(data => {
+        console.log(data);
         const user = data._data;
+        console.log(user);
         setFullname(user.fullname);
         setBirthDay(user.birthday);
         setGender(user.gender);
         setApartment(user.apartment);
 
         storage()
-          .ref(user.image)
+          .ref(user.avatar)
           .getDownloadURL()
-          .then(url => setImage(url))
+          .then(url => setAvatar(url))
           .catch(e => console.log(e));
       });
-      console.log(auth().currentuser);
-
     // Stop listening for updates when no longer required
   }, []);
 
@@ -104,13 +104,13 @@ const InformationLight = ({navigation}) => {
             source={information}
             resizeMode="stretch"
           />
-          <Image style={styles.Avatar} source={{uri : image}} resizeMode="stretch" />
+          <Image style={styles.Avatar} source={{uri : avatar}} resizeMode="stretch" />
           <View style={styles.form}>
             <View style={styles.formText}>
-              <Text style={styles.txt}>Full name: </Text>
-              <Text style={styles.txt}>Birth day: </Text>
-              <Text style={styles.txt}>Gender: </Text>
-              <Text style={styles.txt}>Department: </Text>
+              <Text style={styles.txt}>Full name:</Text>
+              <Text style={styles.txt}>Birth day:</Text>
+              <Text style={styles.txt}>Gender:</Text>
+              <Text style={styles.txt}>Department:</Text>
             </View>
             <View style={styles.formTextView}>
               <Text style={styles.txtView}>{fullname}</Text>
@@ -259,9 +259,10 @@ const styles = StyleSheet.create({
   txt: {
     color: '#880B0B',
     fontWeight: '800',
+    marginLeft: 25
   },
   formTextView: {
-    marginLeft: 20,
+    marginLeft: 8,
     marginTop: 10,
   },
   txtView: {
