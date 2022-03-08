@@ -13,9 +13,9 @@ import {
   Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import auth from '@react-native-firebase/auth';
 
 import {background, facebook, youtube, instagram} from '../../Assets';
+import auth from '@react-native-firebase/auth';
 
 const {height} = Dimensions.get('window');
 const Register = ({navigation}) => {
@@ -23,30 +23,36 @@ const Register = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   const RegisterAccount = () => {
-    console.log(email);
-    auth()
-      .signInWithEmailAndPassword(email, password)
+    auth().signInWithEmailAndPassword(email, password)
       .then(() => {
-        Alert.alert('Alert !!!', 'Register Success', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => navigation.navigate('SignIn')},
-        ]);
+        Alert.alert(
+          "Alert Title",
+          "Register Success",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => navigation.navigate('SignIn')}
+          ]
+        );
         setEmail('');
         setPassword('');
       })
       .catch(error => {
-        Alert.alert('Alert !!!', 'Sign In Fail', [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => console.log('Sign In Fail')},
-        ]);
+        Alert.alert(
+          "Alert Title",
+          "Register Fail",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "OK", onPress: () => console.log('SignIn Fail')}
+          ]
+        );
       });
   };
 
@@ -79,7 +85,7 @@ const Register = ({navigation}) => {
 
             <TextInput
               style={styles.input}
-              placeholder="**********"
+              placeholder="************"
               placeholderTextColor="#fff"
               securityTextEntry={true}
               onChangeText={value => setPassword(value)}

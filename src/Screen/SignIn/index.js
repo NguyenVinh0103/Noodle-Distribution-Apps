@@ -23,8 +23,7 @@ const SignIn = ({navigation}) => {
   const [password, setPassword] = useState('');
   const SignInAccount = () => {
     console.log(email);
-    auth()
-      .signInWithEmailAndPassword(email, password)
+    auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         Alert.alert('Alert !!!', 'Sign In Success', [
           {
