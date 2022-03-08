@@ -21,7 +21,6 @@ import {
   information,
   iconLy,
   btnInformation,
-  avatar,
   Vector,
 } from '../../Assets';
 
@@ -57,7 +56,7 @@ const InformationLight = ({navigation}) => {
   const [fullname, setFullname] = useState('');
   const [birthday, setBirthDay] = useState('');
   const [gender, setGender] = useState('');
-  const [apartment, setApartment] = useState('');
+  const [department, setDepartment] = useState('');
   const [avatar, setAvatar] = useState('https://static.topcv.vn/avatars/QRVnjwk0LezxZEWkQwTs_61e023815645f_cvtpl.jpg?1646718915');
 
   useEffect(() => {
@@ -72,7 +71,7 @@ const InformationLight = ({navigation}) => {
         setFullname(user.fullname);
         setBirthDay(user.birthday);
         setGender(user.gender);
-        setApartment(user.apartment);
+        setDepartment(user.department);
 
         storage()
           .ref(user.avatar)
@@ -116,7 +115,7 @@ const InformationLight = ({navigation}) => {
               <Text style={styles.txtView}>{fullname}</Text>
               <Text style={styles.txtView}>{birthday}</Text>
               <Text style={styles.txtView}>{gender}</Text>
-              <Text style={styles.txtView}>{apartment}</Text>
+              <Text style={styles.txtView}>{department}</Text>
             </View>
           </View>
         </View>
