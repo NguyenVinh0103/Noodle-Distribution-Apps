@@ -12,6 +12,10 @@ target 'Noodle' do
     :hermes_enabled => false
   )
 
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'NoodleTests' do
     inherit! :complete
     # Pods for testing

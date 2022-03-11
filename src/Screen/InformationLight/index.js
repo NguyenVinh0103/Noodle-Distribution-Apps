@@ -14,6 +14,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
+import ImagePicker from 'react-native-image-picker';
 
 import {
   background,
@@ -57,7 +58,49 @@ const InformationLight = ({navigation}) => {
   const [birthday, setBirthDay] = useState('');
   const [gender, setGender] = useState('');
   const [department, setDepartment] = useState('');
-  const [avatar, setAvatar] = useState('https://static.topcv.vn/avatars/QRVnjwk0LezxZEWkQwTs_61e023815645f_cvtpl.jpg?1646718915');
+  const [avatar, setAvatar] = useState(
+    'https://static.topcv.vn/avatars/QRVnjwk0LezxZEWkQwTs_61e023815645f_cvtpl.jpg?1646718915',
+  );
+  const [filePath, setFilePath] = useState({});
+
+  const chooseFile = () => {
+    let options = {
+      title: 'Select Image',
+      customButtons: [
+        {
+          name: 'Select Image Noodle Apps',
+          title: 'Choose Photo from Noodle Apps'
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log(
+          'User tapped custom button: ',
+          response.customButton
+        );
+        alert(response.customButton);
+      } else {
+        let source = response;
+        // You can also display the image using data:
+        // let source = {
+        //   uri: 'data:image/jpeg;base64,' + response.data
+        // };
+        setFilePath(source);
+      }
+    });
+  };
+  
 
   useEffect(() => {
     firestore()
@@ -103,7 +146,12 @@ const InformationLight = ({navigation}) => {
             source={information}
             resizeMode="stretch"
           />
-          <Image style={styles.Avatar} source={{uri : avatar}} resizeMode="stretch" />
+          <Image
+            style={styles.Avatar}
+            source={{uri: avatar}}
+            resizeMode="stretch"
+          />
+
           <View style={styles.form}>
             <View style={styles.formText}>
               <Text style={styles.txt}>Full name:</Text>
@@ -116,6 +164,9 @@ const InformationLight = ({navigation}) => {
               <Text style={styles.txtView}>{birthday}</Text>
               <Text style={styles.txtView}>{gender}</Text>
               <Text style={styles.txtView}>{department}</Text>
+              <TouchableOpacity onPress={chooseFile}>
+                <Text style={styles.selectImage}>Select Image</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -244,7 +295,7 @@ const styles = StyleSheet.create({
     borderRadius: 90 / 2,
     margin: 10,
     position: 'absolute',
-    top: 30,
+    top: 26,
     left: 30,
   },
   form: {
@@ -253,16 +304,23 @@ const styles = StyleSheet.create({
   },
   formText: {
     marginLeft: 80,
-    marginTop: 10,
+    marginTop: 12,
   },
   txt: {
     color: '#880B0B',
     fontWeight: '800',
-    marginLeft: 25
+    marginLeft: 25,
+  },
+  selectImage: {
+    marginLeft: 20,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginTop: 4,
+    textAlign: 'center',
   },
   formTextView: {
     marginLeft: 8,
-    marginTop: 10,
+    marginTop: 12,
   },
   txtView: {
     fontWeight: '400',

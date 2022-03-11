@@ -15,6 +15,7 @@ import InformationLight from './src/Screen/InformationLight/index.js';
 import InformationDark from './src/Screen/InformationDark/index.js';
 import InformationDarkDefaul from './src/Screen/InformationDarkDefaul/index.js';
 import OutOfNoodle from './src/Screen/OutOfNoodle/index.js';
+import RegisterAccount from './src/Screen/RegisterAccount/index.js';
 
 import Error from './src/Screen/Error/index.js';
 
@@ -25,6 +26,7 @@ const App = () => {
 
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="RegisterAccount" component={RegisterAccount}  options={{ headerShown: false  }}/>
         <Stack.Screen name="SignIn" component={SignIn}  options={{ headerShown: false  }}/>
         <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false  }}/>
         <Stack.Screen name="Done" component={Done}  options={{ headerShown: false  }}/>

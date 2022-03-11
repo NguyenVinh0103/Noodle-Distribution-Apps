@@ -19,22 +19,22 @@ import auth from '@react-native-firebase/auth';
 import {background, facebook, google, instagram} from '../../Assets';
 
 const {height} = Dimensions.get('window');
-const SignIn = ({navigation}) => {
+const Register = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
-  const SignInAccount = () => {
+  const Register = () => {
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        Alert.alert('Alert !!!', 'Sign In Success', [
+        Alert.alert('Alert !!!', 'Register In Success', [
           {
             text: 'Cancel',
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
-          {text: 'OK', onPress: () => navigation.navigate('InformationLight')},
+          {text: 'OK', onPress: () => navigation.navigate('SignIn')},
         ]);
         setEmail('');
         setPassword('');
@@ -69,7 +69,7 @@ const SignIn = ({navigation}) => {
         resizeMode="cover"
         style={styles.image}>
         <View>
-          <Text style={styles.content}>Sign In </Text>
+          <Text style={styles.content}>Register</Text>
         </View>
 
         <StatusBar
@@ -100,9 +100,9 @@ const SignIn = ({navigation}) => {
               autoFocus={true}></TextInput>
 
             <Text style={{color: 'red', marginLeft: 35}}>{errorPassword}</Text>
-            <TouchableOpacity onPress={SignInAccount}>
+            <TouchableOpacity onPress={Register}>
               <View style={styles.buttonSignIn}>
-                <Text style={styles.buttonLoginText}>Sign In</Text>
+                <Text style={styles.buttonLoginText}>Register</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -116,17 +116,9 @@ const SignIn = ({navigation}) => {
                 borderColor: '#fff',
                 marginTop: 12,
               }}></View>
-            <TouchableOpacity onPress={() => LoginFacebook.then(() => console.log('Signed in with Facebook!'))}>
-              <Image style={styles.icon} source={facebook} />
-            </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => LoginInstagram.then(() =>console.log('Signed in with instagram!'))}>
-              <Image style={styles.icon} source={instagram} />  
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => LoginGoogle.then(() =>console.log('Signed in with google!'))}>
-              <Image style={styles.icon} source={google} />
-            </TouchableOpacity>
+            <Image style={styles.icon} source={facebook} />
+            <Image style={styles.icon} source={instagram} />
+            <Image style={styles.icon} source={google} />
             <View
               style={{
                 width: 90,
@@ -154,7 +146,7 @@ const SignIn = ({navigation}) => {
   );
 };
 
-export default SignIn;
+export default Register;
 const TEXT = {
   color: '#fff',
   textAlign: 'center',
