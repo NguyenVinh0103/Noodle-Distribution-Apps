@@ -9,12 +9,15 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  Modal,
+  Pressable,
+  Alert,
 } from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import {
   background,
@@ -59,48 +62,29 @@ const InformationLight = ({navigation}) => {
   const [gender, setGender] = useState('');
   const [department, setDepartment] = useState('');
   const [avatar, setAvatar] = useState(
-    'https://static.topcv.vn/avatars/QRVnjwk0LezxZEWkQwTs_61e023815645f_cvtpl.jpg?1646718915',
+    'https://console.firebase.google.com/project/nodle-app/storage/nodle-app.appspot.com/files/VinhNguyen.jpg',
   );
-  const [filePath, setFilePath] = useState({});
-
-  const chooseFile = () => {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        {
-          name: 'Select Image Noodle Apps',
-          title: 'Choose Photo from Noodle Apps'
-        },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log(
-          'User tapped custom button: ',
-          response.customButton
-        );
-        alert(response.customButton);
-      } else {
-        let source = response;
-        // You can also display the image using data:
-        // let source = {
-        //   uri: 'data:image/jpeg;base64,' + response.data
-        // };
-        setFilePath(source);
-      }
+  const [panelVisible, setPanelVisible] = useState(false);
+  const takePhotoCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
     });
   };
-  
+
+  const takePhotoFormLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+      setAvatar(image.path);
+    });
+  };
 
   useEffect(() => {
     firestore()
@@ -124,7 +108,7 @@ const InformationLight = ({navigation}) => {
       });
     // Stop listening for updates when no longer required
   }, []);
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -132,6 +116,34 @@ const InformationLight = ({navigation}) => {
         backgroundColor={'black'}
         hidden={false}
       />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={panelVisible}
+        onRequestClose={() => {
+          Alert.alert('Camera has been closed.');
+          setPanelVisible(!panelVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Upload Avatar, Please!</Text>
+            <TouchableOpacity activeOpacity={0.5} onPress={takePhotoCamera}>
+              <Text style={styles.button}>Take Photo</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={takePhotoFormLibrary}>
+              <Text style={styles.button}> Choose Form Library</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setPanelVisible(!panelVisible)}>
+                <Text style={styles.textStyle}>Cancel Camera</Text>
+              </Pressable>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <ImageBackground
         source={background}
         resizeMode="cover"
@@ -164,8 +176,10 @@ const InformationLight = ({navigation}) => {
               <Text style={styles.txtView}>{birthday}</Text>
               <Text style={styles.txtView}>{gender}</Text>
               <Text style={styles.txtView}>{department}</Text>
-              <TouchableOpacity onPress={chooseFile}>
-                <Text style={styles.selectImage}>Select Image</Text>
+              <TouchableOpacity activeOpacity={0.5} onPress={takePhotoCamera}>
+                <Pressable onPress={() => setPanelVisible(true)}>
+                  <Text style={styles.selectImage}>Take Photo</Text>
+                </Pressable>
               </TouchableOpacity>
             </View>
           </View>
@@ -290,13 +304,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   Avatar: {
-    width: 90,
-    height: 90,
-    borderRadius: 90 / 2,
+    width: 100,
+    height: 104,
+    borderRadius: 100 / 2,
     margin: 10,
     position: 'absolute',
-    top: 26,
-    left: 30,
+    top: 20,
+    left: 26,
   },
   form: {
     position: 'absolute',
@@ -312,11 +326,13 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   selectImage: {
-    marginLeft: 20,
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    marginLeft: 16,
+    backgroundColor: '#ff4500',
+    borderRadius: 12,
     marginTop: 4,
     textAlign: 'center',
+    color: 'white',
+    padding: 6 / 2,
   },
   formTextView: {
     marginLeft: 8,
@@ -325,5 +341,51 @@ const styles = StyleSheet.create({
   txtView: {
     fontWeight: '400',
     color: '#880B0B',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#ff4500',
+    marginTop: 20,
+  },
+  buttonClose: {
+    backgroundColor: '#ff4500',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    color: '#000',
+    fontWeight: 'bold',
+    fontFamily: 'italic',
   },
 });
