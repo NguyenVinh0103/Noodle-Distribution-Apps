@@ -18,7 +18,6 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 import ImagePicker from 'react-native-image-crop-picker';
-
 import {
   background,
   logo,
@@ -70,8 +69,10 @@ const InformationLight = ({navigation}) => {
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image);
+    }).then(async avatar => {
+      console.log(avatar);
+      setAvatar(avatar.path);
+      
     });
   };
 
@@ -80,9 +81,27 @@ const InformationLight = ({navigation}) => {
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image);
-      setAvatar(image.path);
+    }).then(async avatar => {
+      console.log(avatar);
+      setAvatar(avatar.path);
+      const photoURL =avatar.path
+      const filename = photoURL.substring(photoURL.lastIndexOf('/') + 1); 
+      const uploadUri = photoURL;
+      const task = storage().ref(filename).putFile(uploadUri); 
+      task.on('state_changed', async snapshot => { 
+        const data = snapshot.ref.fullPath 
+        await storage().ref(data).getDownloadURL().then(
+          async item => { 
+            console.log("item", item) 
+            await firestore()
+            .collection('User')
+            .doc(auth().currentUser.email)
+            .update({ avatar: item })
+            .then(() => { 
+              console.log("upload success")
+            }) 
+          }) 
+        });
     });
   };
 
@@ -94,21 +113,24 @@ const InformationLight = ({navigation}) => {
       .then(data => {
         console.log(data);
         const user = data._data;
+        setAvatar(user.avatar)
         console.log(user);
         setFullname(user.fullname);
         setBirthDay(user.birthday);
         setGender(user.gender);
         setDepartment(user.department);
-
-        storage()
-          .ref(user.avatar)
-          .getDownloadURL()
-          .then(url => setAvatar(url))
-          .catch(e => console.log(e));
+        
+        // storage()
+        //   .ref(user.avatar)
+        //   .getDownloadURL()
+        //   .then(url => setAvatar(url))
+        //   .catch(e => console.log(e));
       });
     // Stop listening for updates when no longer required
   }, []);
+
   
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -176,7 +198,7 @@ const InformationLight = ({navigation}) => {
               <Text style={styles.txtView}>{birthday}</Text>
               <Text style={styles.txtView}>{gender}</Text>
               <Text style={styles.txtView}>{department}</Text>
-              <TouchableOpacity activeOpacity={0.5} onPress={takePhotoCamera}>
+              <TouchableOpacity>
                 <Pressable onPress={() => setPanelVisible(true)}>
                   <Text style={styles.selectImage}>Take Photo</Text>
                 </Pressable>

@@ -52,7 +52,6 @@ const Register = ({navigation}) => {
     
         console.error(error);
       });
-      console.log(email);
   };
 
   useEffect(() => {
@@ -60,7 +59,6 @@ const Register = ({navigation}) => {
       navigation.navigate('SignIn');
     }
   }, []);
-  console.log(auth().currentUser)
 
   return (
     <SafeAreaView style={styles.container}>

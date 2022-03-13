@@ -60,7 +60,6 @@ const SignIn = ({navigation}) => {
       navigation.navigate('SignIn');
     }
   }, []);
-  console.log(auth().currentUser)
 
   return (
     <SafeAreaView style={styles.container}>
